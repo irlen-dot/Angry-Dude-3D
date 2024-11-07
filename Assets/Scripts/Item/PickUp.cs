@@ -1,49 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class PickUp : MonoBehaviour
 {
-    private BoxCollider triggerCollider;
+    [SerializeField]
+    private ItemsEnum itemType;
 
-    void Start()
+    public ItemsEnum ItemType
     {
-        GetTriggerCollider();
+        get { return itemType; }
     }
 
-    private void GetTriggerCollider()
+    private bool canPickup = false;
+
+    private void Update()
     {
-        // Get all BoxColliders on this object
-        BoxCollider[] colliders = GetComponents<BoxCollider>();
-
-        // Find the BoxCollider with isTrigger = true
-        foreach (BoxCollider collider in colliders)
+        // Check for input in Update instead of OnTriggerStay
+        if (canPickup && Input.GetKeyDown(KeyCode.E))
         {
-            if (collider.isTrigger)
-            {
-                triggerCollider = collider;
-                break;
-            }
-        }
-
-        // Optional: Check if we found the trigger collider
-        if (triggerCollider == null)
-        {
-            Debug.LogWarning("No trigger BoxCollider found on " + gameObject.name);
+            Debug.Log($"Picking up {itemType}...");
+            Inventory inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
+            inventory.SetItem(gameObject);
+            canPickup = false; // Reset the flag
+            gameObject.SetActive(false);
+            Debug.Log($"Picked up the {itemType}.");
         }
     }
 
-    // Called when another collider exits the trigger
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("You entered into an item pickup zone.");
+            canPickup = true;
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player exited the trigger!");
-            other.GetComponent<Inventory>();
-
-            // Add your code here for what should happen when player exits
+            Debug.Log("You exited into an item pickup zone.");
+            canPickup = false;
         }
     }
+
+    // OnTriggerStay is no longer needed
 }

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Interface for items
@@ -24,18 +22,7 @@ public class ItemManager : MonoBehaviour
     Item[] items;
     // Start is called before the first frame update
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public Item GetItem(String name)
+    public Item GetItem(string name)
     {
         Item item = Array.Find<Item>(items, item => item.Name == name);
         return item;
