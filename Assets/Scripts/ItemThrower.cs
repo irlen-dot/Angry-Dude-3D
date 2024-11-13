@@ -1,89 +1,175 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-// This script is meant to be a component of a player
 public class ItemThrower : MonoBehaviour
 {
-    [Header("Throw settings")]
-
-    [SerializeField] private float throwForce = 10f;
+    [Header("Throw Settings")]
+    [SerializeField] private float throwForce = 20f;
     [SerializeField] private float throwUpwardForce = 2f;
-    [SerializeField, Range(0, 90)] private float upwardAngle = 30f;
-    [SerializeField] private float heightOffset = 2f;
+    [SerializeField] private Camera playerCamera;
 
+    [Header("Rotation Settings")]
+    [SerializeField] private float rotationForce = 5f;  // Controls how fast the item rotates
+    [SerializeField] private bool randomizeRotationAxis = true;  // Whether to randomize rotation axis
+    [SerializeField] private Vector3 rotationAxis = Vector3.right;  // Default rotation axis if not randomized
 
-    private GameObject heldItem; // Reference to currently held item
+    [Header("Item Settings")]
+    [SerializeField] private float itemMass = 1f;
+    [SerializeField] private float destroyDelay = 5f;
+    [SerializeField] private GameObject debugItemPrefab;
+    private GameObject currentItem;
+    private Inventory inventory;
 
+    [Header("Debug Settings")]
+    [SerializeField] private bool debugMode = true;
+    private GameObject originalPrefab;
+
+    void Start()
+    {
+        inventory = GetComponent<Inventory>();
+        if (playerCamera == null)
+            playerCamera = GetComponentInChildren<Camera>();
+    }
+
+    public void SetItem(GameObject item)
+    {
+        if (debugMode)
+        {
+            debugItemPrefab = item;
+            originalPrefab = item;
+        }
+        else
+        {
+            currentItem = item;
+            currentItem.SetActive(false);
+        }
+    }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && heldItem != null)
+        if (Input.GetMouseButtonDown(1))
         {
-            ThrowItem();
+            if (debugMode)
+            {
+                ThrowDebugItem();
+            }
+            else
+            {
+                ThrowItem();
+            }
         }
     }
 
-    public void SetHeldItem(GameObject item)
+    private Vector3 GetRandomRotationAxis()
     {
-        heldItem = item;
+        return new Vector3(
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f)
+        ).normalized;
     }
 
-    private void ThrowItem()
+    void ThrowDebugItem()
     {
-        Rigidbody rb = heldItem.GetComponent<Rigidbody>();
+        if (playerCamera == null || debugItemPrefab == null) return;
+
+        // Calculate spawn position slightly in front of camera
+        Vector3 spawnPosition = playerCamera.transform.position + playerCamera.transform.forward * 0.5f;
+
+        // Get the exact direction the player is looking using camera's forward
+        Vector3 throwDirection = playerCamera.transform.forward.normalized;
+
+        // Create the item and ensure it's not a child of any other object
+        GameObject thrownItem = Instantiate(debugItemPrefab, spawnPosition, Quaternion.LookRotation(throwDirection));
+        thrownItem.transform.SetParent(null);
+        thrownItem.SetActive(true);
+
+        Rigidbody rb = thrownItem.GetComponent<Rigidbody>();
         if (rb == null)
-        {
-            rb = heldItem.AddComponent<Rigidbody>();
-        }
+            rb = thrownItem.AddComponent<Rigidbody>();
 
-        // Enable collider if it exists
-        if (heldItem.TryGetComponent<Collider>(out Collider collider))
-        {
-            collider.enabled = true;
-        }
-
-        heldItem.SetActive(true);
-        // Reset parent
-        heldItem.transform.SetParent(null);
-
-        // Set position with height offset
-        Vector3 throwPosition = transform.position + Vector3.up * heightOffset;
-        heldItem.transform.position = throwPosition;
-
-        // Calculate throw direction with upward angle using this transform's forward
-        Vector3 throwDirection = Quaternion.Euler(-upwardAngle, 0, 0) * transform.forward;
-
-        // Reset rigidbody settings
-        rb.isKinematic = false;
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        // Configure the rigidbody
+        rb.mass = itemMass;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.useGravity = true;
 
-        // Apply forces
-        rb.velocity = Vector3.zero; // Reset velocity before throwing
-        rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
-        rb.AddForce(Vector3.up * throwUpwardForce, ForceMode.Impulse);
+        // Clear any existing physics state
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
-        // Optional: Add some rotation
-        rb.AddTorque(Random.insideUnitSphere * throwForce, ForceMode.Impulse);
+        // Calculate throw force using normalized direction
+        Vector3 throwForceVector = throwDirection * throwForce;
+        if (throwUpwardForce > 0)
+        {
+            throwForceVector += Vector3.up * throwUpwardForce;
+        }
 
-        // Clear reference
-        heldItem = null;
+        // Apply force in world space
+        rb.AddForce(throwForceVector, ForceMode.Impulse);
+
+        // Apply rotation
+        Vector3 rotAxis = randomizeRotationAxis ? GetRandomRotationAxis() : rotationAxis.normalized;
+        rb.AddTorque(rotAxis * rotationForce, ForceMode.Impulse);
+
+        if (destroyDelay > 0)
+            Destroy(thrownItem, destroyDelay);
     }
 
-    // Optional: Visualize throw direction and position in editor
-    private void OnDrawGizmos()
+    void ThrowItem()
     {
-        Gizmos.color = Color.red;
-        Vector3 throwPosition = transform.position + Vector3.up * heightOffset;
-        Vector3 throwDirection = Quaternion.Euler(-upwardAngle, 0, 0) * transform.forward;
+        if (playerCamera == null || currentItem == null) return;
 
-        // Draw throw position
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(throwPosition, 0.2f);
+        // Calculate spawn position slightly in front of camera
+        Vector3 spawnPosition = playerCamera.transform.position + playerCamera.transform.forward * 0.5f;
 
-        // Draw throw direction
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(throwPosition, throwDirection * 2);
+        // Get the exact direction the player is looking using camera's forward
+        Vector3 throwDirection = playerCamera.transform.forward.normalized;
+
+        // Position and rotate the item
+        currentItem.transform.position = spawnPosition;
+        currentItem.transform.rotation = Quaternion.LookRotation(throwDirection);
+        currentItem.transform.SetParent(null);
+        currentItem.SetActive(true);
+
+        Rigidbody rb = currentItem.GetComponent<Rigidbody>();
+        if (rb == null)
+            rb = currentItem.AddComponent<Rigidbody>();
+
+        // Configure the rigidbody
+        rb.mass = itemMass;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.useGravity = true;
+
+        // Clear any existing physics state
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        // Calculate throw force using normalized direction
+        Vector3 throwForceVector = throwDirection * throwForce;
+        if (throwUpwardForce > 0)
+        {
+            throwForceVector += Vector3.up * throwUpwardForce;
+        }
+
+        // Apply force in world space
+        rb.AddForce(throwForceVector, ForceMode.Impulse);
+
+        // Apply rotation
+        Vector3 rotAxis = randomizeRotationAxis ? GetRandomRotationAxis() : rotationAxis.normalized;
+        rb.AddTorque(rotAxis * rotationForce, ForceMode.Impulse);
+
+        inventory.RemoveItem(currentItem);
+        currentItem = null;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (playerCamera != null)
+        {
+            Gizmos.color = Color.red;
+            Vector3 throwDirection = playerCamera.transform.forward.normalized;
+            Gizmos.DrawRay(playerCamera.transform.position, throwDirection * 3f);
+        }
     }
 }
