@@ -14,11 +14,13 @@ public class Mover : MonoBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
+    // LOOK HERE GUYS - START
     private CharacterController controller;
     private Camera playerCamera;
     private float xRotation = 0f;
     private Vector3 velocity;
     private bool isGrounded;
+    // END
 
     private void Start()
     {
