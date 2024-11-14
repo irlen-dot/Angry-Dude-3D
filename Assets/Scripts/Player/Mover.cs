@@ -3,55 +3,89 @@ using UnityEngine;
 public class Mover : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 7f;
+    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float runSpeed = 8f;
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float mouseSensitivity = 2f;
+    [SerializeField] private float gravity = -9.81f;
 
-    // [Header("Ground Check")]
-    // [SerializeField] private Transform groundCheck;
+    [Header("Ground Check")]
+    [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
-    private Rigidbody rb;
+    // LOOK HERE GUYS - START
+    private CharacterController controller;
+    private Camera playerCamera;
+    private float xRotation = 0f;
+    private Vector3 velocity;
     private bool isGrounded;
-    private float horizontalInput;
-    private float verticalInput;
+    // END
 
-    void Start()
+    private void Start()
     {
-        // Get the Rigidbody component
-        rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
+        playerCamera = GetComponentInChildren<Camera>();
 
-        // Lock rotation to prevent the player from falling over
-        rb.freezeRotation = true;
+        // Lock and hide cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    void Update()
+    private void Update()
+    {
+        HandleMovement();
+        HandleMouseLook();
+        HandleJump();
+    }
+
+    private void HandleMovement()
     {
         // Check if player is grounded
-        // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        // Get horizontal input (A/D or Left/Right arrows)
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-
-        // Get vertical input (W/S or Up/Down arrows)
-        verticalInput = Input.GetAxisRaw("Vertical");
-        
-        // Handle movement
-        Move();
-    }
-
-    void Move()
-    {
-        // Calculate movement direction combining horizontal and forward movement
-        Vector3 movement = (transform.right * horizontalInput) + (transform.forward * verticalInput);
-        
-        // Normalize the movement vector to prevent faster diagonal movement
-        if (movement.magnitude > 1f)
+        if (isGrounded && velocity.y < 0)
         {
-            movement.Normalize();
+            velocity.y = -2f;
         }
 
+        // Get input axes
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+
+        // Calculate movement speed (run if holding shift)
+        float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+
+        // Create movement vector
+        Vector3 move = transform.right * x + transform.forward * z;
+
         // Apply movement
-        transform.position += movement * moveSpeed * Time.deltaTime;
+        controller.Move(move * currentSpeed * Time.deltaTime);
+
+        // Apply gravity
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void HandleMouseLook()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        // Calculate vertical rotation (looking up/down)
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        // Apply rotations
+        playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.Rotate(Vector3.up * mouseX);
+    }
+
+    private void HandleJump()
+    {
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+        }
     }
 }

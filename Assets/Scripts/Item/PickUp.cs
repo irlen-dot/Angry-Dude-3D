@@ -5,6 +5,11 @@ public class PickUp : MonoBehaviour
     [SerializeField]
     private ItemsEnum itemType;
 
+    [SerializeField]
+    private KeyCode pickIpKey = KeyCode.E;
+
+    private ItemThrower itemThrower;
+
     public ItemsEnum ItemType
     {
         get { return itemType; }
@@ -12,18 +17,32 @@ public class PickUp : MonoBehaviour
 
     private bool canPickup = false;
 
+    private void Awake()
+    {
+        itemThrower = FindFirstObjectByType<ItemThrower>();
+    }
+
     private void Update()
     {
         // Check for input in Update instead of OnTriggerStay
         if (canPickup && Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log($"Picking up {itemType}...");
-            Inventory inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-            inventory.SetItem(gameObject);
-            canPickup = false; // Reset the flag
-            gameObject.SetActive(false);
-            Debug.Log($"Picked up the {itemType}.");
+            PickUpItem();
         }
+    }
+
+    private void PickUpItem()
+    {
+        Debug.Log($"Picking up {itemType}...");
+        Inventory inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
+        inventory.SetItem(gameObject);
+        canPickup = false;
+        // TODO return
+        itemThrower.SetItem(gameObject);
+        // I've linked the positions, assuming that the item thrower is linked to the player
+        gameObject.transform.position = itemThrower.transform.position;
+        gameObject.SetActive(false);
+        Debug.Log($"Picked up the {itemType}.");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -43,6 +62,4 @@ public class PickUp : MonoBehaviour
             canPickup = false;
         }
     }
-
-    // OnTriggerStay is no longer needed
 }
