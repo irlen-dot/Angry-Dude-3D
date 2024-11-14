@@ -1,9 +1,13 @@
-using Unity.VisualScripting;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class ArmedNPC : MonoBehaviour
 {
+
+
     private NavMeshAgent navMeshAgent;
     private Mover player;
 
@@ -18,11 +22,8 @@ public class ArmedNPC : MonoBehaviour
         navMeshAgent.SetDestination(player.transform.position);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         navMeshAgent.SetDestination(player.transform.position);
-
     }
-
-
 }
