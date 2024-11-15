@@ -15,10 +15,12 @@ public class CombatManager : MonoBehaviour
         attackManager = GetComponent<AttackTypeManager>();
     }
 
-    // void
+
 
     public void AddEnabledNPC(ArmedNPC npc)
     {
+        attackManager.GenerateAttackSequence();
+
         armedNPCs.Add(npc);
     }
 }
