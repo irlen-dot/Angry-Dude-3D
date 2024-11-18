@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum NPCType
@@ -13,7 +11,15 @@ public class SpawnPoint : MonoBehaviour
     private GameObject armedNPC;
     private GameObject unarmedNPC;
 
+    private CombatManager combatManager;
+
     void Awake()
+    {
+        InitNPCs();
+        combatManager = FindFirstObjectByType<CombatManager>();
+    }
+
+    private void InitNPCs()
     {
         armedNPC = transform.Find("Armed NPC").gameObject;
         unarmedNPC = transform.Find("Unarmed NPC").gameObject;
@@ -27,11 +33,17 @@ public class SpawnPoint : MonoBehaviour
     {
         if (type == NPCType.Armed)
         {
-            armedNPC.SetActive(true);
+            SpawnArmed();
         }
         if (type == NPCType.Unarmed)
         {
             unarmedNPC.SetActive(true);
         }
+    }
+
+    private void SpawnArmed()
+    {
+        armedNPC.SetActive(true);
+        combatManager.AddEnabledNPC(armedNPC.GetComponent<ArmedNPC>());
     }
 }

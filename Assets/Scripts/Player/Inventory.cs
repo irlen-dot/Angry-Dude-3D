@@ -3,12 +3,23 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    GameObject currentItem;
-    Dictionary<string, GameObject> items = new Dictionary<string, GameObject>();
+    private GameObject currentItem;
+
+    private ItemsEnum? currentItemType;
+
+    private Dictionary<ItemsEnum, GameObject> items = new Dictionary<ItemsEnum, GameObject>();
+
+    private Hit hit;
+
+    private Shoot shoot;
 
     // Start is called before the first frame update
     void Start()
     {
+        hit = transform.Find("Hit Range").GetComponent<Hit>();
+        // TODO remove line
+        hit.enabled = false;
+        shoot = GetComponent<Shoot>();
         InitItems();
     }
 
@@ -18,32 +29,43 @@ public class Inventory : MonoBehaviour
         GameObject items = transform.Find("Items").gameObject;
         foreach (Transform item in items.transform)
         {
-            this.items.Add(item.name, item.gameObject);
-            this.items[item.name].SetActive(false);
+            ItemsEnum itemType = item.GetComponent<PickUp>().ItemType;
+            this.items.Add(itemType, item.gameObject);
+            this.items[itemType].SetActive(false);
+            if (itemType == ItemsEnum.ShotGun)
+            {
+                this.items[itemType].SetActive(true);
+            }
             Debug.Log($"{item.name} is inited.");
         }
     }
 
-    public void SetItem(GameObject item)
+    public void SetItem(ItemsEnum item)
     {
-        Debug.Log($"Setting {item.name} in the inventory...");
         ToggleItem(item, true);
-        Debug.Log($"Setted {item.name} in the inventory.");
     }
 
-    public void RemoveItem(GameObject item)
+    public void RemoveItem(ItemsEnum item)
     {
-        Debug.Log($"Removing {item.name} from the inventory...");
         ToggleItem(item, false);
-        Debug.Log($"Removed {item.name} from the inventory.");
     }
 
-    private void ToggleItem(GameObject item, bool isActive)
+    private void ToggleItem(ItemsEnum itemType, bool isActive)
     {
-        string itemType = item.GetComponent<PickUp>().ItemType.ToString();
-        items[itemType].SetActive(isActive);
-        if (isActive) { currentItem = item; }
-        else { currentItem = null; }
+        if (currentItem != null)
+            currentItem.SetActive(false);
 
+        items[itemType].SetActive(isActive);
+
+        if (isActive)
+        {
+            currentItem = items[itemType];
+            currentItemType = itemType;
+        }
+        else
+        {
+            currentItem = null;
+            currentItemType = null;
+        }
     }
 }

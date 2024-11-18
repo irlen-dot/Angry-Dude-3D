@@ -12,4 +12,5 @@ public enum ItemsEnum
     Chair,
     FlowerPot,
     Pot,
+    ShotGun,
 }
