@@ -17,6 +17,8 @@ public class ItemThrower : MonoBehaviour
     [SerializeField] private float destroyDelay = 5f;
     [SerializeField] private GameObject debugItemPrefab;
     private GameObject currentItem;
+    private ItemsEnum currentItemType;
+
     private Inventory inventory;
 
     [Header("Debug Settings")]
@@ -30,7 +32,7 @@ public class ItemThrower : MonoBehaviour
             playerCamera = GetComponentInChildren<Camera>();
     }
 
-    public void SetItem(GameObject item)
+    public void SetItem(GameObject item, ItemsEnum itemType)
     {
         if (debugMode)
         {
@@ -39,6 +41,7 @@ public class ItemThrower : MonoBehaviour
         }
         else
         {
+            currentItemType = itemType;
             currentItem = item;
             currentItem.SetActive(false);
         }
@@ -159,7 +162,7 @@ public class ItemThrower : MonoBehaviour
         Vector3 rotAxis = randomizeRotationAxis ? GetRandomRotationAxis() : rotationAxis.normalized;
         rb.AddTorque(rotAxis * rotationForce, ForceMode.Impulse);
 
-        inventory.RemoveItem(currentItem);
+        inventory.RemoveItem(currentItemType);
         currentItem = null;
     }
 

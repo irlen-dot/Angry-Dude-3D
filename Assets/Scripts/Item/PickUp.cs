@@ -35,10 +35,10 @@ public class PickUp : MonoBehaviour
     {
         Debug.Log($"Picking up {itemType}...");
         Inventory inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-        inventory.SetItem(gameObject);
+        inventory.SetItem(itemType);
         canPickup = false;
         // TODO return
-        itemThrower.SetItem(gameObject);
+        itemThrower.SetItem(gameObject, itemType);
         // I've linked the positions, assuming that the item thrower is linked to the player
         gameObject.transform.position = itemThrower.transform.position;
         gameObject.SetActive(false);
