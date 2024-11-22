@@ -42,12 +42,12 @@ public class Mover : MonoBehaviour
     private void HandleMovement()
     {
         // Check if player is grounded
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if (isGrounded && velocity.y < 0)
-        {
-            velocity.y = -2f;
-        }
+        // if (isGrounded && velocity.y < 0)
+        // {
+        //     velocity.y = -2f;
+        // }
 
         // Get input axes
         float x = Input.GetAxis("Horizontal");
@@ -83,9 +83,10 @@ public class Mover : MonoBehaviour
 
     private void HandleJump()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+            Debug.Log("Jumped");
         }
     }
 }
