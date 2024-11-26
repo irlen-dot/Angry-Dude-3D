@@ -2,23 +2,25 @@ using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
-    [SerializeField]
-    private ItemsEnum itemType;
+    // [SerializeField]
+    // private ItemsEnum itemType;
 
     [SerializeField]
-    private KeyCode pickIpKey = KeyCode.E;
+    private Item itemInfo;
 
     private ItemThrower itemThrower;
 
-    public ItemsEnum ItemType
+    public Item ItemInfo
     {
-        get { return itemType; }
+        get { return itemInfo; }
     }
 
     private bool canPickup = false;
+    private KeyCode pickIpKey = KeyCode.E;
 
     private void Awake()
     {
+        pickIpKey = KeyCode.E;
         itemThrower = FindFirstObjectByType<ItemThrower>();
     }
 
