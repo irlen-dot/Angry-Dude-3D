@@ -2,17 +2,14 @@ using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
-    // [SerializeField]
-    // private ItemsEnum itemType;
-
     [SerializeField]
-    private Item itemInfo;
+    private ItemsEnum itemType;
 
     private ItemThrower itemThrower;
 
-    public Item ItemInfo
+    public ItemsEnum ItemType
     {
-        get { return itemInfo; }
+        get { return itemType; }
     }
 
     private bool canPickup = false;

@@ -1,32 +1,16 @@
 using System;
 using UnityEngine;
 
-// Interface for items
-public interface IItem
-{
-    string Name { get; set; }
-    GameObject ItemObject { get; set; }
-}
-
-// Concrete implementation of IItem
-[System.Serializable]
-public class Item : IItem
-{
-    public bool isHeavy { get; set; }
-    public string Name { get; set; }
-    public ItemsEnum itemType { get; set; }
-    public GameObject ItemObject { get; set; }
-}
 
 public class ItemManager : MonoBehaviour
 {
     [SerializeField]
-    Item[] items;
+    ItemInfo[] items;
     // Start is called before the first frame update
 
-    public Item GetItem(string name)
+    public ItemInfo GetItem(string name)
     {
-        Item item = Array.Find<Item>(items, item => item.Name == name);
+        ItemInfo item = Array.Find<ItemInfo>(items, item => item.Name == name);
         return item;
     }
 }
