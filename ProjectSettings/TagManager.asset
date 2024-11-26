@@ -8,6 +8,7 @@ TagManager:
   - Weapon
   - Unarmed NPC
   - Armed NPC
+  - Door
   layers:
   - Default
   - TransparentFX

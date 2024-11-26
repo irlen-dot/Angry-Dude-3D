@@ -6,6 +6,7 @@ public class Door : MonoBehaviour  // Made the class public
     private BoxCollider boxCollider;
     private MeshRenderer mesh;
     private NavMeshObstacle meshObstacle;
+    private bool isBroken = false;
 
     void Start()
     {
@@ -19,12 +20,16 @@ public class Door : MonoBehaviour  // Made the class public
         if (boxCollider == null)
             Debug.LogError("BoxCollider not found on " + gameObject.name);
 
-        OpenDoor();
+        // OpenDoor();
+        CloseDoor();
     }
 
     public void CloseDoor()
     {
-        ToggleDoor(true);
+        if (!isBroken)
+        {
+            ToggleDoor(true);
+        }
     }
 
     public void OpenDoor()
@@ -42,5 +47,11 @@ public class Door : MonoBehaviour  // Made the class public
         mesh.enabled = isClosed;
 
         Debug.Log($"Door state after change - Collider enabled: {boxCollider.enabled}, Mesh enabled: {mesh.enabled}");
+    }
+
+    public void BreakDoor()
+    {
+        OpenDoor();
+        isBroken = false;
     }
 }

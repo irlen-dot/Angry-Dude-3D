@@ -65,6 +65,7 @@ public class ArmedNPC : MonoBehaviour
 
     public void ProcessDamage()
     {
+        Destroy(gameObject);
         Debug.Log("NPC got damage.");
     }
 

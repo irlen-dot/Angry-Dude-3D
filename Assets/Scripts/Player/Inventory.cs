@@ -18,10 +18,13 @@ public class Inventory : MonoBehaviour
         mover = GetComponent<Mover>();
         hit = transform.Find("Hit Range").GetComponent<Hit>();
         // TODO removSe line
-        hit.enabled = false;
+        // hit.enabled = false;
         shoot = GetComponent<Shoot>();
+        shoot.enabled = false;
         InitItems();
     }
+
+
 
     private void InitItems()
     {
@@ -44,12 +47,14 @@ public class Inventory : MonoBehaviour
     public void SetItem(ItemsEnum item)
     {
         ToggleItem(item, true);
+        Debug.Log("The item is setted in the inventory.");
     }
 
     public void RemoveItem(ItemsEnum item)
     {
         ToggleItem(item, false);
     }
+
 
     private void ToggleItem(ItemsEnum itemType, bool isActive)
     {
@@ -58,18 +63,29 @@ public class Inventory : MonoBehaviour
 
         GameObject item = items[itemType];
         item.SetActive(isActive);
-
+        ItemInfo itemInfo = item.GetComponent<Item>().ItemInfo;
+        Debug.Log($"The Is heavy property is {itemInfo.IsHeavy}");
         if (isActive)
         {
 
-            ItemInfo itemInfo = currentItem.gameObject.GetComponent<Item>().ItemInfo;
+            if (itemInfo.IsHeavy)
+            {
+                hit.CanBreakDoor = true;
+                Debug.Log("Setting Can Break Door to True");
+            }
             currentItem = item;
             currentItemType = itemInfo.ItemType;
             currentIsHeavy = itemInfo.IsHeavy;
             mover.SetLowerSpeed(IsHeavy);
         }
+
         else
         {
+            if (itemInfo.IsHeavy)
+            {
+                hit.CanBreakDoor = false;
+            }
+
             currentItem = null;
             currentItemType = null;
             currentIsHeavy = false;
