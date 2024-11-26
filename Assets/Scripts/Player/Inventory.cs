@@ -4,20 +4,20 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     private GameObject currentItem;
-
     private ItemsEnum? currentItemType;
-
+    private bool currentIsHeavy;
+    public bool IsHeavy { get { return currentIsHeavy; } }
     private Dictionary<ItemsEnum, GameObject> items = new Dictionary<ItemsEnum, GameObject>();
-
     private Hit hit;
-
     private Shoot shoot;
+    private Mover mover;
 
     // Start is called before the first frame update
     void Start()
     {
+        mover = GetComponent<Mover>();
         hit = transform.Find("Hit Range").GetComponent<Hit>();
-        // TODO remove line
+        // TODO removSe line
         hit.enabled = false;
         shoot = GetComponent<Shoot>();
         InitItems();
@@ -55,17 +55,23 @@ public class Inventory : MonoBehaviour
         if (currentItem != null)
             currentItem.SetActive(false);
 
-        items[itemType].SetActive(isActive);
+        GameObject item = items[itemType];
+        item.SetActive(isActive);
 
         if (isActive)
         {
-            currentItem = items[itemType];
-            currentItemType = itemType;
+
+            ItemInfo itemInfo = currentItem.gameObject.GetComponent<Item>().ItemInfo;
+            currentItem = item;
+            currentItemType = itemInfo.ItemType;
+            currentIsHeavy = itemInfo.IsHeavy;
+            // mover.SetLowerSpeed()
         }
         else
         {
             currentItem = null;
             currentItemType = null;
+            currentIsHeavy = false;
         }
     }
 }
