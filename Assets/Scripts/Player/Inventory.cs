@@ -29,9 +29,10 @@ public class Inventory : MonoBehaviour
         GameObject items = transform.Find("Items").gameObject;
         foreach (Transform item in items.transform)
         {
-            ItemsEnum itemType = item.GetComponent<PickUp>().ItemType;
+            ItemsEnum itemType = item.GetComponent<Item>().ItemInfo.ItemType;
             this.items.Add(itemType, item.gameObject);
             this.items[itemType].SetActive(false);
+            Debug.Log($"Item Type: {itemType}");
             if (itemType == ItemsEnum.ShotGun)
             {
                 this.items[itemType].SetActive(true);
@@ -65,7 +66,7 @@ public class Inventory : MonoBehaviour
             currentItem = item;
             currentItemType = itemInfo.ItemType;
             currentIsHeavy = itemInfo.IsHeavy;
-            // mover.SetLowerSpeed()
+            mover.SetLowerSpeed(IsHeavy);
         }
         else
         {

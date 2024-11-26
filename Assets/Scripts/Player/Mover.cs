@@ -72,6 +72,7 @@ public class Mover : MonoBehaviour
 
     public void SetLowerSpeed(bool slow)
     {
+        Debug.Log("Starting to be heavy!");
         isSlowed = slow;
     }
 

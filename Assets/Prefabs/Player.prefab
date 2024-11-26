@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7859754900922047180}
   - component: {fileID: 5350597149466472670}
   - component: {fileID: 269755341212177847}
+  - component: {fileID: 4121447713551545365}
   m_Layer: 0
   m_Name: Knife
   m_TagString: Untagged
@@ -164,6 +165,22 @@ MonoBehaviour:
     isHeavy: 0
     itemName: 
     itemType: 0
+--- !u!114 &4121447713551545365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118150870863120777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1244223ca2a7f394586369f888c26541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemInfo:
+    isHeavy: 0
+    itemName: Knife
+    itemType: 1
 --- !u!1 &143168478546214598
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,6 +366,7 @@ GameObject:
   - component: {fileID: 7259114204530200008}
   - component: {fileID: 8217685151277966505}
   - component: {fileID: 1528682015339846354}
+  - component: {fileID: 776830516046289929}
   m_Layer: 0
   m_Name: Bottle
   m_TagString: Untagged
@@ -455,6 +473,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemType: 0
+--- !u!114 &776830516046289929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252598621989324596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1244223ca2a7f394586369f888c26541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemInfo:
+    isHeavy: 0
+    itemName: Bottle
+    itemType: 4
 --- !u!1 &5602790917993052026
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,6 +684,142 @@ MonoBehaviour:
   pelletCount: 8
   range: 100
   damage: 10
+--- !u!1 &5894719065339219686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 247254802335823229}
+  - component: {fileID: 7398414007471256346}
+  - component: {fileID: 1216019157809766919}
+  - component: {fileID: 3488548293531743428}
+  - component: {fileID: 605561480057793508}
+  - component: {fileID: 5915361651487469446}
+  m_Layer: 0
+  m_Name: Chest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &247254802335823229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894719065339219686}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -31.787, y: 14.146, z: -5.863}
+  m_LocalScale: {x: 0.7039644, y: 0.62272894, z: 1.4873323}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1158807337914996700}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &7398414007471256346
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894719065339219686}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1216019157809766919
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894719065339219686}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 84fd0bdd8833cb14392ec947d9c247c3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3488548293531743428
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894719065339219686}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &605561480057793508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894719065339219686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f94f0cf6ec02342b2c78fce9657716, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 0
+--- !u!114 &5915361651487469446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894719065339219686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1244223ca2a7f394586369f888c26541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemInfo:
+    isHeavy: 1
+    itemName: Chest
+    itemType: 0
 --- !u!1 &6893839605941544820
 GameObject:
   m_ObjectHideFlags: 0
@@ -790,6 +960,7 @@ Transform:
   - {fileID: 8672143585843771524}
   - {fileID: 4682947195257413416}
   - {fileID: 5995175696039766503}
+  - {fileID: 247254802335823229}
   m_Father: {fileID: 4293169182369157418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1062893121147938796
@@ -867,7 +1038,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3326996804491592747, guid: 7c77caae651a3aa43bccca9e9a3197c6, type: 3}
       propertyPath: m_Name
-      value: shotgun
+      value: Shotgun
       objectReference: {fileID: 0}
     - target: {fileID: 8080684351519161385, guid: 7c77caae651a3aa43bccca9e9a3197c6, type: 3}
       propertyPath: m_BlendShapeWeights.Array.data[0]
@@ -880,6 +1051,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3326996804491592747, guid: 7c77caae651a3aa43bccca9e9a3197c6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3910760925318943924}
+    - targetCorrespondingSourceObject: {fileID: 3326996804491592747, guid: 7c77caae651a3aa43bccca9e9a3197c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2634732964145270384}
   m_SourcePrefab: {fileID: 100100000, guid: 7c77caae651a3aa43bccca9e9a3197c6, type: 3}
 --- !u!4 &5995175696039766503 stripped
 Transform:
@@ -905,3 +1079,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numOfFramesForHalfReload: 3
   interFrameDelay: 0.07
+--- !u!114 &2634732964145270384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942879636789483478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1244223ca2a7f394586369f888c26541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemInfo:
+    isHeavy: 0
+    itemName: Shotgun
+    itemType: 9
