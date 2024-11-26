@@ -12,7 +12,9 @@ public interface IItem
 [System.Serializable]
 public class Item : IItem
 {
+    public bool isHeavy { get; set; }
     public string Name { get; set; }
+    public ItemsEnum itemType { get; set; }
     public GameObject ItemObject { get; set; }
 }
 
