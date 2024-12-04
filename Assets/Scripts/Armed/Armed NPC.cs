@@ -3,47 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
 public class ArmedNPC : MonoBehaviour
 {
-    // ============== PROPERTIES START
-    private NavMeshAgent navMeshAgent;
+    // Previous properties remain the same
+    [SerializeField] private List<AttackSequence> currentAttackSequence = new List<AttackSequence>();
+    [SerializeField] private float dashForce = 10f;
+    [SerializeField] private float attackRadius = 1.5f; // Radius to check for player collision during attack
 
     private Mover player;
-
-    [SerializeField] private List<AttackSequence> currentAttackSequence = new List<AttackSequence>();
-
-    [SerializeField]
-    private float dashForce = 10f;
-
-    public List<AttackSequence> CurrentAttackSequence { set { currentAttackSequence = value; } }
-
-    public AttackType CurrentAttack { get { return currentAttack; } }
-
-    private int currentSequenceIndex = 0;
-
-    private int currentMoveIndex = 0;
-
-    private AttackType currentAttack;
+    private NavMeshAgent navMeshAgent;
+    private Rigidbody rb;
+    private Health playerHealth;
 
     private bool isDashed;
-
     private float originalSpeed;
-    private Rigidbody rb;
+    private int currentSequenceIndex = 0;
+    private int currentMoveIndex = 0;
+    private AttackType currentAttack;
+    private bool isAttacking = false;
 
-    // ============== PROPERTIES END
+    public List<AttackSequence> CurrentAttackSequence { set { currentAttackSequence = value; } }
+    public AttackType CurrentAttack { get { return currentAttack; } }
 
+    private bool canHit = false;
 
-    public void LogTheSequence()
-    {
-        Debug.Log($"The current Attack sequence is {currentAttackSequence[0].sequence[1]}");
-    }
+    public bool CanHit { set { canHit = value; } }
 
     void Awake()
     {
+        playerHealth = FindFirstObjectByType<Health>();
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
-
         navMeshAgent = GetComponent<NavMeshAgent>();
         originalSpeed = navMeshAgent.speed;
         player = FindFirstObjectByType<Mover>();
@@ -61,18 +51,44 @@ public class ArmedNPC : MonoBehaviour
         {
             MakeMove();
         }
+
+        // Check for player hit during attack
+        if (isAttacking)
+        {
+            CheckPlayerHit();
+        }
     }
 
-    public void ProcessDamage()
+    private void CheckPlayerHit()
     {
-        Debug.Log("NPC got damage.");
+        // Check if player is within attack radius
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRadius);
+        foreach (var hitCollider in hitColliders)
+        {
+            Health playerHealth = hitCollider.GetComponent<Health>();
+            if (playerHealth != null)
+            {
+                // We found the player, trigger the hit
+                isAttacking = false; // Prevent multiple hits from same attack
+                Debug.Log("Player in attack range!");
+                return;
+            }
+        }
     }
 
     public void ProcessShotgunDamage()
     {
-        Debug.Log("NPC got shotgun damage.");
+        // TODO add death animation and shit
+        Debug.Log("Takes a shotgun shot");
+        Destroy(gameObject);
     }
 
+    public void ProcessDamage()
+    {
+        // TODO add a npc death animation and return it to the object pool
+        Debug.Log("NPC is dead");
+        Destroy(gameObject);
+    }
 
     private void MakeMove()
     {
@@ -112,9 +128,10 @@ public class ArmedNPC : MonoBehaviour
     {
         if (isDashed)
         {
-            rb.velocity = Vector3.zero; // Stop the dash
-            navMeshAgent.enabled = true; // Re-enable NavMeshAgent
+            rb.velocity = Vector3.zero;
+            navMeshAgent.enabled = true;
             isDashed = false;
+            isAttacking = false;
         }
     }
 
@@ -130,19 +147,28 @@ public class ArmedNPC : MonoBehaviour
 
     private void StartDash()
     {
-
         isDashed = true;
-        navMeshAgent.enabled = false; // Disable NavMeshAgent during dash
+        isAttacking = true;
+        navMeshAgent.enabled = false;
         Vector3 dashDirection = (player.transform.position - transform.position).normalized;
         rb.AddForce(dashDirection * dashForce, ForceMode.Impulse);
-
-        // yield return new WaitForSeconds(Time.deltaTime);
-
     }
 
     private void ProcessHit()
     {
         StartDash();
-        Debug.Log("Dash is turned on.");
+        Debug.Log($"Armed NPC -- Can hit is: {canHit}");
+        if (canHit)
+        {
+            playerHealth.TakeDamage();
+        }
+        Debug.Log("Armed NPC -- Dash is turned on.");
+    }
+
+    // Optional: Visualize the attack radius in the editor
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
     }
 }

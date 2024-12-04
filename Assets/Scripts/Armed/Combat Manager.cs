@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
-    [SerializeField] bool isDebug = true;
     private SongManager songManager;
     private List<ArmedNPC> armedNPCs = new List<ArmedNPC>();
     private AttackTypeManager attackManager;
@@ -42,19 +41,11 @@ public class CombatManager : MonoBehaviour
             InitializeWithCurrentSongPart();
         }
 
-        if (isDebug)
-        {
-            Debug.Log("CombatManager initialized");
-        }
     }
 
     private void InitializeWithCurrentSongPart()
     {
         PartOfTheSong currentPart = songManager.GetCurrentPart();
-        if (isDebug)
-        {
-            Debug.Log($"Initializing CombatManager with song part: {currentPart}");
-        }
         try
         {
             if (attackManager.CachedAttackSequence.ContainsKey(currentPart))
@@ -62,10 +53,6 @@ public class CombatManager : MonoBehaviour
                 currentAttackSequences = attackManager.CachedAttackSequence[currentPart];
                 UpdateAllNPCSequences();
 
-                if (isDebug)
-                {
-                    Debug.Log($"Initialized with {currentAttackSequences.Count} attack sequences");
-                }
             }
             else
             {
@@ -80,10 +67,6 @@ public class CombatManager : MonoBehaviour
 
     private void OnSongManagerInitialized()
     {
-        if (isDebug)
-        {
-            Debug.Log("SongManager initialized, setting up combat state");
-        }
         InitializeWithCurrentSongPart();
     }
 
@@ -98,10 +81,6 @@ public class CombatManager : MonoBehaviour
 
     private void OnSongPartChanged(PartOfTheSong newPart)
     {
-        if (isDebug)
-        {
-            Debug.Log($"Song part changed to: {newPart}");
-        }
 
         if (!attackManager.CachedAttackSequence.ContainsKey(newPart))
         {
@@ -121,11 +100,6 @@ public class CombatManager : MonoBehaviour
             {
                 armedNPCs[i].CurrentAttackSequence = currentAttackSequences[i];
                 Debug.Log($"currentAttackSequences hahahah {currentAttackSequences.Count}");
-                if (isDebug)
-                {
-                    Debug.Log($"Updated NPC {i} with new sequence");
-                    armedNPCs[i].LogTheSequence();
-                }
             }
             else
             {
@@ -136,10 +110,6 @@ public class CombatManager : MonoBehaviour
 
     public void AddEnabledNPC(ArmedNPC npc)
     {
-        if (isDebug)
-        {
-            Debug.Log($"Adding new NPC. Current NPCs: {armedNPCs.Count}, Available sequences: {currentAttackSequences.Count}");
-        }
 
         if (currentAttackSequences.Count <= armedNPCs.Count)
         {
@@ -151,11 +121,6 @@ public class CombatManager : MonoBehaviour
         List<AttackSequence> sequence = currentAttackSequences[armedNPCs.Count - 1];
         npc.CurrentAttackSequence = sequence;
 
-        if (isDebug)
-        {
-            Debug.Log($"NPC added with {sequence.Count} attacks");
-            npc.LogTheSequence();
-        }
 
         PartOfTheSong currentPart = songManager.GetCurrentPart();
         AdjustNPCForSongPart(npc, currentPart);
@@ -163,20 +128,12 @@ public class CombatManager : MonoBehaviour
 
     private void AdjustNPCForSongPart(ArmedNPC npc, PartOfTheSong songPart)
     {
-        if (isDebug)
-        {
-            Debug.Log($"Adjusting NPC for part: {songPart}");
-        }
         // Your adjustment logic here
     }
 
     // Helper method to check the state of the manager
     public void LogCurrentState()
     {
-        Debug.Log($"Combat Manager State:");
-        Debug.Log($"NPCs: {armedNPCs.Count}");
-        Debug.Log($"Current Attack Sequences: {currentAttackSequences?.Count ?? 0}");
-        Debug.Log($"Current Song Part: {songManager?.GetCurrentPart()}");
 
         for (int i = 0; i < armedNPCs.Count; i++)
         {
