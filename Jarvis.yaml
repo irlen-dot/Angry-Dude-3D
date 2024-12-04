@@ -1,0 +1,23 @@
+# Unity Jarvis File
+
+# Jarvis.
+# Created by the Almaty Guys Studio. copyrights preserved.
+# main dev and owner: Irlen Turlykhanov
+
+# Links:
+# https://github.com/irlen-dot (Github)
+# https://www.linkedin.com/in/irlen-turlykhanov-5202171a3/ (Linkedin)
+
+# Hope you have a great day and fun coding, the champion, the beast!
+# https://www.youtube.com/watch?v=4xDzrJKXOOY
+
+---
+# Your "src" file.
+# It will start the indexing starting from this file
+starting-directory: Assets
+
+
+# It does not index files in ignored
+# directories
+ignored-directories:  # Remove ignored-directories Entirely if not needed
+  - StarterAssets # 

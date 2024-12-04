@@ -5221,6 +5221,14 @@ PrefabInstance:
       propertyPath: itemType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7942879636789483478, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408207322482772982, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8767713151303963714, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
       propertyPath: groundCheck
       value: 

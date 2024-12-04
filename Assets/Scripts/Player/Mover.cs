@@ -21,8 +21,7 @@ public class Mover : MonoBehaviour
     private float xRotation = 0f;
     private Vector3 velocity;
     private int jumpCount = 0;
-    private int maxJumps = 2;
-    private bool isGrounded;
+    private int maxJumps = 3; private bool isGrounded;
     private bool isSlowed = false;  // Added to track slow state
 
     private void Start()
@@ -99,7 +98,7 @@ public class Mover : MonoBehaviour
             jumpCount = 0;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < maxJumps)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
             jumpCount++;

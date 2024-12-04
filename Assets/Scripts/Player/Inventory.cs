@@ -35,12 +35,6 @@ public class Inventory : MonoBehaviour
             ItemsEnum itemType = item.GetComponent<Item>().ItemInfo.ItemType;
             this.items.Add(itemType, item.gameObject);
             this.items[itemType].SetActive(false);
-            Debug.Log($"Item Type: {itemType}");
-            if (itemType == ItemsEnum.ShotGun)
-            {
-                this.items[itemType].SetActive(true);
-            }
-            Debug.Log($"{item.name} is inited.");
         }
     }
 

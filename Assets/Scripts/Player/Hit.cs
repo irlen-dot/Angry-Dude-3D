@@ -1,8 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Hit : MonoBehaviour
 {
     private ArmedNPC armedNPC;
+
+    private List<ArmedNPC> nPCsInside = new List<ArmedNPC>();
+
     private Door door;
 
     private int numberOfNPCsInside = 0;
@@ -30,11 +34,6 @@ public class Hit : MonoBehaviour
         }
     }
 
-    public void LogSome()
-    {
-        Debug.Log("Log some.");
-    }
-
     void FixedUpdate()
     {
         if (isHit)
@@ -45,17 +44,16 @@ public class Hit : MonoBehaviour
 
     private void ProcessHit()
     {
-        Debug.Log($"The Can Break Door prop: {door}");
+        Debug.Log("Initing the hit...");
         if (armedNPC)
         {
-            Debug.Log("Hit Npc hard.");
             HitArmedNpc();
         }
         else if (door && canBreakDoor)
         {
-            Debug.Log("Door Breaking");
             HitDoor();
         }
+        isHit = false;
     }
 
     private void HitDoor()
@@ -70,8 +68,6 @@ public class Hit : MonoBehaviour
             return;
         }
         armedNPC.ProcessDamage();
-        isHit = false;
-
     }
 
     void OnTriggerEnter(Collider other)
@@ -82,7 +78,6 @@ public class Hit : MonoBehaviour
         }
         if (other.tag.Equals("Door"))
         {
-            Debug.Log("Door added.");
             door = other.GetComponent<Door>();
         }
 
@@ -102,11 +97,9 @@ public class Hit : MonoBehaviour
         if (numberOfNPCsInside < 1)
         {
             armedNPC = other.GetComponent<ArmedNPC>();
-            Debug.Log("Armed NPC in the Hit range was set.");
         }
+        nPCsInside.Add(armedNPC);
         numberOfNPCsInside++;
-        Debug.Log($"NPCs to hit: {numberOfNPCsInside}.");
-
     }
 
     private void OnNPCExit()
@@ -115,9 +108,6 @@ public class Hit : MonoBehaviour
         if (numberOfNPCsInside <= 0)
         {
             armedNPC = null;
-            Debug.Log("Armed NPC in the Hit range was unset.");
         }
-        Debug.Log($"NPCs to hit: {numberOfNPCsInside}.");
-
     }
 }
