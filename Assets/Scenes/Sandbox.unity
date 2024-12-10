@@ -901,7 +901,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1463460689341373360, guid: 1000c2dd389235148bf0442cb7a40f34, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.7962093
+      value: 9.51
       objectReference: {fileID: 0}
     - target: {fileID: 1463460689341373360, guid: 1000c2dd389235148bf0442cb7a40f34, type: 3}
       propertyPath: m_LocalPosition.y
@@ -909,7 +909,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1463460689341373360, guid: 1000c2dd389235148bf0442cb7a40f34, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.5442744
+      value: -2.84
       objectReference: {fileID: 0}
     - target: {fileID: 1463460689341373360, guid: 1000c2dd389235148bf0442cb7a40f34, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3889,6 +3889,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2581438018147191072, guid: 44259cca273bb054592ebaa3e61964a7, type: 3}
+      propertyPath: itemType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3885735182638113069, guid: 44259cca273bb054592ebaa3e61964a7, type: 3}
       propertyPath: m_Name
       value: Knife
@@ -4129,7 +4133,7 @@ PrefabInstance:
       objectReference: {fileID: 898709385}
     - target: {fileID: 735317987418189772, guid: 876168a686f30964b9fd64a4cae0bac0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.36
+      value: 7.23
       objectReference: {fileID: 0}
     - target: {fileID: 735317987418189772, guid: 876168a686f30964b9fd64a4cae0bac0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4137,7 +4141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 735317987418189772, guid: 876168a686f30964b9fd64a4cae0bac0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.94
+      value: -12.44
       objectReference: {fileID: 0}
     - target: {fileID: 735317987418189772, guid: 876168a686f30964b9fd64a4cae0bac0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5613,6 +5617,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1780735372964239597, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
+      propertyPath: throwForce
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4293169182369157418, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 17.98
