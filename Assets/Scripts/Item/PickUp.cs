@@ -2,28 +2,35 @@ using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
-    [SerializeField]
-    private ItemsEnum itemType;
+    [SerializeField] private ItemsEnum itemType;
+    [SerializeField] private string itemName = "Some Item";
 
-    private ItemThrower itemThrower;
-
-    public ItemsEnum ItemType
-    {
-        get { return itemType; }
-    }
+    public ItemsEnum ItemType => itemType;
+    public string ItemName => itemName;
 
     private bool canPickup = false;
-    private KeyCode pickIpKey = KeyCode.E;
+    private Inventory playerInventory;
 
-    private void Awake()
+    private void OnTriggerEnter(Collider other)
     {
-        pickIpKey = KeyCode.E;
-        itemThrower = FindFirstObjectByType<ItemThrower>();
+        if (other.CompareTag("Player"))
+        {
+            canPickup = true;
+            playerInventory = other.GetComponent<Inventory>();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            canPickup = false;
+            playerInventory = null;
+        }
     }
 
     private void Update()
     {
-        // Check for input in Update instead of OnTriggerStay
         if (canPickup && Input.GetKeyDown(KeyCode.E))
         {
             PickUpItem();
@@ -32,33 +39,10 @@ public class PickUp : MonoBehaviour
 
     private void PickUpItem()
     {
-        Debug.Log($"Picking up {itemType}...");
-        Inventory inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-        inventory.SetItem(itemType);
-        canPickup = false;
-        // TODO return
-        itemThrower.SetItem(gameObject, itemType);
-        // I've linked the positions, assuming that the item thrower is linked to the player
-        gameObject.transform.position = itemThrower.transform.position;
-        gameObject.SetActive(false);
-        Debug.Log($"Picked up the {itemType}.");
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        if (playerInventory != null)
         {
-            Debug.Log("You entered into an item pickup zone.");
-            canPickup = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("You exited into an item pickup zone.");
-            canPickup = false;
+            playerInventory.PickupItem(itemType);
+            Destroy(gameObject);  // Remove the world item once picked up
         }
     }
 }
