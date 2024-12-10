@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -5675807415411785415}
   - component: {fileID: 7753154078330893520}
   - component: {fileID: 232444723190774284}
+  - component: {fileID: -7921570575760435587}
   m_Layer: 0
   m_Name: Unarmed NPC
   m_TagString: Unarmed NPC
@@ -141,3 +142,15 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &-7921570575760435587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2582962968576198326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7278392fd0a89d840b27e7b1e37ef239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

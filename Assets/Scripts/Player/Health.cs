@@ -1,21 +1,24 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
-using System.Runtime.CompilerServices;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField][Range(1, 3)] private int healthLeft;
+    private int healthLeft;
     [SerializeField] private float regenerationDelay = 10f;  // Time in seconds before health regenerates
+    [SerializeField][Range(1, 3)] private int maxHealth = 3;  // Added to make max health configurable
 
-    private BoxCollider boxCollider;
     private Coroutine regenerationCoroutine;
-
     private InGameInterface inGameInterface;
 
     void Awake()
     {
+        healthLeft = maxHealth;
         inGameInterface = FindFirstObjectByType<InGameInterface>();
+    }
+
+    void Start()
+    {
+        inGameInterface.SetHealth(healthLeft);
     }
 
     void OnTriggerEnter(Collider other)
@@ -31,15 +34,11 @@ public class Health : MonoBehaviour
     {
         Debug.Log("Health class -- You've allowed to hit you");
         armedNPC.GetComponent<ArmedNPC>().CanHit = true;
-
     }
 
     public void TakeDamage()
     {
-
         Debug.Log("Health -- You got hit");
-
-
 
         // Stop any existing regeneration coroutine
         if (regenerationCoroutine != null)
@@ -55,22 +54,37 @@ public class Health : MonoBehaviour
     private void DecreaseHealth()
     {
         healthLeft--;
+        inGameInterface.SetHealth(healthLeft);
         if (healthLeft <= 0)
         {
             Debug.Log("You lost.");
         }
     }
 
-    // private void 
+    public void IncreaseHealth(int amount = 1)
+    {
+        // Calculate how much health can actually be added without exceeding max
+        int actualIncrease = Mathf.Min(amount, maxHealth - healthLeft);
+
+        if (actualIncrease > 0)
+        {
+            healthLeft += actualIncrease;
+            inGameInterface.SetHealth(healthLeft);
+            Debug.Log($"Health increased by {actualIncrease}. Current health: {healthLeft}");
+        }
+        else
+        {
+            Debug.Log("Health is already at maximum!");
+        }
+    }
 
     private IEnumerator RegenerateHealthAfterDelay()
     {
         yield return new WaitForSeconds(regenerationDelay);
 
-        if (healthLeft < 3)  // Assuming 3 is the maximum health
+        if (healthLeft < maxHealth)
         {
-            healthLeft++;
-            Debug.Log($"Health regenerated. Current health: {healthLeft}");
+            IncreaseHealth();  // Use the new IncreaseHealth method
         }
     }
 }

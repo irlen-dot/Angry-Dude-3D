@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -3069476677835163320}
   - component: {fileID: 1808788744413892588}
   - component: {fileID: 9217868096448127284}
+  - component: {fileID: -6536135600691317195}
   m_Layer: 0
   m_Name: Armed NPC
   m_TagString: Armed NPC
@@ -123,6 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentAttackSequence: []
   dashForce: 5
+  attackRadius: 1.5
 --- !u!54 &1808788744413892588
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -171,3 +173,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2, y: 2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6536135600691317195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8235158800972280573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7278392fd0a89d840b27e7b1e37ef239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

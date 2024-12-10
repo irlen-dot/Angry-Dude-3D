@@ -1,77 +1,62 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private GameObject currentItem;
-    private ItemsEnum? currentItemType;
-    private bool currentIsHeavy;
-    public bool IsHeavy { get { return currentIsHeavy; } }
-    private Dictionary<ItemsEnum, GameObject> items = new Dictionary<ItemsEnum, GameObject>();
-    private Hit hit;
-    private Shoot shoot;
-    private Mover mover;
+    [SerializeField] private GameObject[] itemPrefabs;  // Array matching ItemsEnum order
+    private int currentItemIndex = -1;
+    private GameObject currentVisualItem;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        mover = GetComponent<Mover>();
-        hit = transform.Find("Hit Range").GetComponent<Hit>();
-        // TODO removSe line
-        hit.enabled = false;
-        shoot = GetComponent<Shoot>();
         InitItems();
     }
 
     private void InitItems()
     {
-        Debug.Log("Items initing in the inventory...");
+        GameObject items = transform.Find("Items").gameObject;
+        // Deactivate all visual items at start
+        foreach (Transform item in items.transform)
+        {
+            item.gameObject.SetActive(false);
+        }
+    }
+
+    public void PickupItem(ItemsEnum itemType)
+    {
+        // Deactivate current visual item if exists
+        if (currentVisualItem != null)
+        {
+            currentVisualItem.SetActive(false);
+        }
+
+        // Set new item
+        currentItemIndex = (int)itemType;
+
+        // Find and activate the visual representation
         GameObject items = transform.Find("Items").gameObject;
         foreach (Transform item in items.transform)
         {
-            ItemsEnum itemType = item.GetComponent<PickUp>().ItemType;
-            this.items.Add(itemType, item.gameObject);
-            this.items[itemType].SetActive(false);
-            if (itemType == ItemsEnum.ShotGun)
+            if (item.GetComponent<PickUp>().ItemType == itemType)
             {
-                this.items[itemType].SetActive(true);
+                currentVisualItem = item.gameObject;
+                currentVisualItem.SetActive(true);
+                break;
             }
-            Debug.Log($"{item.name} is inited.");
         }
     }
 
-    public void SetItem(ItemsEnum item)
+    public int GetCurrentItemIndex()
     {
-        ToggleItem(item, true);
+        return currentItemIndex;
     }
 
-    public void RemoveItem(ItemsEnum item)
+    public void RemoveCurrentItem()
     {
-        ToggleItem(item, false);
-    }
-
-    private void ToggleItem(ItemsEnum itemType, bool isActive)
-    {
-        if (currentItem != null)
-            currentItem.SetActive(false);
-
-        GameObject item = items[itemType];
-        item.SetActive(isActive);
-
-        if (isActive)
+        if (currentVisualItem != null)
         {
-
-            ItemInfo itemInfo = currentItem.gameObject.GetComponent<Item>().ItemInfo;
-            currentItem = item;
-            currentItemType = itemInfo.ItemType;
-            currentIsHeavy = itemInfo.IsHeavy;
-            // mover.SetLowerSpeed()
+            currentVisualItem.SetActive(false);
         }
-        else
-        {
-            currentItem = null;
-            currentItemType = null;
-            currentIsHeavy = false;
-        }
+        currentVisualItem = null;
+        currentItemIndex = -1;
     }
 }
