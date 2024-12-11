@@ -612,6 +612,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1780735372964239597, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
+      propertyPath: throwForce
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4293169182369157418, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.5
@@ -675,6 +679,10 @@ PrefabInstance:
     - target: {fileID: 8767713151303963714, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
       propertyPath: slowSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8767713151303963714, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
+      propertyPath: walkSpeed
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8767713151303963714, guid: 9cda1e7dab660224896d94d480eb7a5b, type: 3}
       propertyPath: groundCheck
@@ -3943,6 +3951,10 @@ PrefabInstance:
     - target: {fileID: 3963991054585946643, guid: 44259cca273bb054592ebaa3e61964a7, type: 3}
       propertyPath: m_Size.z
       value: 4.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315283871533069441, guid: 44259cca273bb054592ebaa3e61964a7, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
