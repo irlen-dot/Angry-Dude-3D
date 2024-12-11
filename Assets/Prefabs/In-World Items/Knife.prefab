@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f94f0cf6ec02342b2c78fce9657716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 1
   itemName: Some Item
 --- !u!114 &876872232947749900
 MonoBehaviour:
